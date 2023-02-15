@@ -16,7 +16,7 @@ class Field:
         for x in range(self.width):
             column = []
             for y in range(self.height):
-                column.append(Tile(x*16+15, y*16+11, False))
+                column.append(Tile(x*16+15, y*16+11, False, (x, y), self))
             self.tiles.append(column)
         self.randomize_bombs()
 
@@ -33,7 +33,29 @@ class Field:
             self.tiles[posx][posy].bomb = True
             bomb_num -= 1
 
+    def get_number(self, x: int, y: int):
+        total = 0
+        if self.tiles[x][y].override:
+            return self.tiles[x][y].override
+
+        for xo in range(-1, 2):
+            for yo in range(-1, 2):
+                if not xo and not yo:
+                    continue
+                try:
+                    real = self.tiles[xo+x][yo+y]
+                except IndexError:
+                    continue
+                if real.bomb:
+                    total += 1
+        return total
+
     def draw(self, screen: pygame.Surface):
         for column in self.tiles:
             for tile in column:
                 tile.draw(screen)
+
+    def do(self, screen: pygame.Surface):
+        for _ in range(1, 9):
+            self.tiles[_][1].override_num(_)
+            self.tiles[_][1].click(screen)

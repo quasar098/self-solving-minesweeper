@@ -11,9 +11,14 @@ five_inside_rect = screen.get_rect().inflate(-26, -18)
 
 field = Field(five_inside_rect.inflate(-6, -6))
 
+screen.fill(BG_COLOR)
+draw_frame(screen, screen.get_rect())
+draw_inverse_frame(screen, five_inside_rect)
+field.draw(screen)
+pygame.display.flip()
+
 running = True
 while running:
-    screen.fill(BG_COLOR)
     for event in pygame.event.get():
         # this is a screensaver, so any input just stops the screensaver (that's the point)
 
@@ -26,11 +31,8 @@ while running:
                 continue
             running = False
 
-    # draw frames like windows xp minesweeper
-    draw_frame(screen, screen.get_rect())
-    draw_inverse_frame(screen, five_inside_rect)
-    field.draw(screen)
+    field.do(screen)
 
-    pygame.display.flip()
+    update_screen()
     clock.tick(FRAMERATE)
 pygame.quit()
