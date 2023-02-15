@@ -22,9 +22,9 @@ while running:
     for event in pygame.event.get():
         # this is a screensaver, so any input just stops the screensaver (that's the point)
 
-        # todo: uncomment below
-        # if event.type == pygame.KEYDOWN:
-        #     running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             # do not cancel screensaver on mouse scroll because sometimes i randomly scroll the mouse for fun
             if event.button in (4, 5):
