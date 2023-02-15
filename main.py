@@ -1,16 +1,15 @@
-from win32api import GetSystemMetrics
 import pygame
 from utils import *
+from field import Field
 
 pygame.init()
-
-WIDTH, HEIGHT = [GetSystemMetrics(screen_size) for screen_size in range(2)]
-FRAMERATE = 75
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode([WIDTH, HEIGHT], pygame.NOFRAME)
 
-five_inside_rect = screen.get_rect().inflate(-26, -26)
+five_inside_rect = screen.get_rect().inflate(-26, -18)
+
+field = Field(five_inside_rect.inflate(-6, -6))
 
 running = True
 while running:
@@ -30,6 +29,7 @@ while running:
     # draw frames like windows xp minesweeper
     draw_frame(screen, screen.get_rect())
     draw_inverse_frame(screen, five_inside_rect)
+    field.draw(screen)
 
     pygame.display.flip()
     clock.tick(FRAMERATE)

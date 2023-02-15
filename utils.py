@@ -1,11 +1,16 @@
 import pygame
 import pygame.gfxdraw
+from win32api import GetSystemMetrics
 
 
-# colors
+# constants
 BG_COLOR = pygame.Color(192, 192, 192)
 FRAME_DARK = pygame.Color(135, 136, 143)
 FRAME_LIGHT = pygame.Color(255, 255, 255)
+WIDTH, HEIGHT = [GetSystemMetrics(screen_size) for screen_size in range(2)]
+FRAMERATE = 75  # todo this dynamically using win32api
+BOMB_PERCENT = 5  # lower amount is better but doesnt matter for NO_GUESSING = True
+NO_GUESSING = False  # todo: make this work so it completes every time
 
 
 def move_pos(base: tuple[int, int], moved: tuple[int, int]):
