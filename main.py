@@ -2,37 +2,31 @@ import pygame
 from utils import *
 from field import Field
 
-pygame.init()
 
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode([WIDTH, HEIGHT], pygame.NOFRAME)
+def main():
+    pygame.init()
 
-five_inside_rect = screen.get_rect().inflate(-26, -18)
+    clock = pygame.time.Clock()
+    screen = pygame.display.set_mode([WIDTH, HEIGHT], pygame.NOFRAME)
 
-field = Field(five_inside_rect.inflate(-6, -6))
+    five_inside_rect = screen.get_rect().inflate(-26, -18)
 
-screen.fill(BG_COLOR)
-draw_frame(screen, screen.get_rect())
-draw_inverse_frame(screen, five_inside_rect)
-field.draw(screen)
-pygame.display.flip()
+    field = Field(five_inside_rect.inflate(-6, -6))
 
-running = True
-while running:
-    for event in pygame.event.get():
-        # this is a screensaver, so any input just stops the screensaver (that's the point)
+    screen.fill(BG_COLOR)
+    draw_frame(screen, screen.get_rect())
+    draw_inverse_frame(screen, five_inside_rect)
+    field.draw(screen)
+    pygame.display.flip()
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            # do not cancel screensaver on mouse scroll because sometimes i randomly scroll the mouse for fun
-            if event.button in (4, 5):
-                continue
-            running = False
+    while True:
+        field.handle_all()
+        if not PLAYABLE:
+            field.do(screen)
 
-    field.do(screen)
+        update_screen()
+        clock.tick(FRAMERATE)
 
-    update_screen()
-    clock.tick(FRAMERATE)
-pygame.quit()
+
+if __name__ == '__main__':
+    main()

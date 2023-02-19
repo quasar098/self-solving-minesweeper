@@ -1,7 +1,8 @@
 import pygame
 import pygame.gfxdraw
-from win32api import GetSystemMetrics
-from win32api import GetLastInputInfo
+from json import load, JSONDecodeError
+from platform import system
+from time import perf_counter
 
 
 # constants
@@ -16,12 +17,38 @@ DARK_BLUE = pygame.Color(0, 0, 168)
 MAROON = pygame.Color(168, 0, 87)
 AQUA = pygame.Color(0, 123, 123)
 GRAY = pygame.Color(123, 123, 123)
-WIDTH, HEIGHT = [GetSystemMetrics(screen_size) for screen_size in range(2)]
-FRAMERATE = 75  # todo this dynamically using win32api
-BOMB_PERCENT = 14  # lower amount is better but doesnt matter for NO_GUESSING = True
-NO_GUESSING = False  # todo: make this work so it completes every time
 
 dirty_rects: list[pygame.Rect] = []
+
+# width, height
+try:
+    from win32api import GetSystemMetrics
+    WIDTH, HEIGHT = [GetSystemMetrics(screen_size) for screen_size in range(2)]
+except ModuleNotFoundError:
+    WIDTH, HEIGHT = [1920, 1080]
+
+# framerate
+try:
+    from win32api import EnumDisplayDevices, EnumDisplaySettings
+    FRAMERATE = EnumDisplaySettings(EnumDisplayDevices().DeviceName, -1).DisplayFrequency \
+        if "Windows" in system() else 60
+except ModuleNotFoundError:
+    FRAMERATE = 60
+
+
+try:
+    with open("config.json", 'r') as f:
+        try:
+            data = load(f)
+        except JSONDecodeError:
+            data = {}
+except FileNotFoundError:
+    data = {}
+# configuration
+BOMB_PERCENT = data.get('bomb_percent', 14)
+RNG_CARRY = data.get("rng_carry", True)
+PLAYABLE = data.get("playable", False)
+ANIM_SPEED = data.get("anim_speed", 5)
 
 
 def update_screen():
