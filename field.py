@@ -1,9 +1,9 @@
-import pygame
-from utils import *
-from tile import Tile
-from random import randint as rand, choice
-from os.path import join
 import functools
+from os.path import join
+from random import randint as rand, choice
+
+from tile import Tile
+from utils import *
 
 
 def timer(func):

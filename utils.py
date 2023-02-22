@@ -1,9 +1,8 @@
-import pygame
-import pygame.gfxdraw
 from json import load, JSONDecodeError
 from platform import system
-from time import perf_counter
 
+import pygame
+import pygame.gfxdraw
 
 # constants
 BG_COLOR = pygame.Color(192, 192, 192)

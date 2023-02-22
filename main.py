@@ -1,6 +1,5 @@
-import pygame
-from utils import *
 from field import Field
+from utils import *
 
 
 def main():
